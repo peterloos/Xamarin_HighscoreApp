@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SimpleHighScoreApp.Views.MainViewPage"
+    Title=" Simple High Score App - Using Azure Mobile Services"
+    xmlns:local="clr-namespace:SimpleHighScoreApp.ViewModels;assembly=SimpleHighScoreApp"
+    xmlns:conv="clr-namespace:SimpleHighScoreApp.Converters;assembly=SimpleHighScoreApp"
+    BindingContext="{local:HighScoresViewModel}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:StringToColorConverter x:Key="stringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout
+             Padding="5"
+                Orientation="Vertical"
+                VerticalOptions="Start"
+                HorizontalOptions="FillAndExpand">
+                
+                <Grid 
+                    VerticalOptions="Fill"
+                    HorizontalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                
+                    <Label
+                        Grid.Row="0" Grid.Column="0" FontSize="18"
+                        HorizontalTextAlignment="Start" VerticalOptions="Center" 
+                        Text="User Name:"></Label>                
+                    
+                    <Entry
+                        Grid.Row="0" Grid.Column="1" x:Name="EntryUsername"
+                        FontSize="18" Placeholder="Enter User Name" Text="{Binding PlayerName}"/>
+
+                    <Label
+                        Grid.Row="1" Grid.Column="0" FontSize="18"
+                        HorizontalTextAlignment="Start" VerticalOptions="Center" 
+                        Text="Score:"></Label> 
+                    
+                    <Entry
+                        Grid.Row="1" Grid.Column="1" x:Name="EntryScore"
+                        FontSize="18" Placeholder="Enter Score" Text="{Binding PlayerScore}" />
+                </Grid>
+                
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Fill"
+                HorizontalOptions="FillAndExpand">
+
+                <Button
+                    Command="{Binding InsertCommand}"
+                    Text="Add Score"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="FillAndExpand" />
+
+                <Button
+                    Command="{Binding SynchCommand}"
+                    Text="Synchronize"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="FillAndExpand" />
+
+                <Button
+                    Command="{Binding DumpCommand}"
+                    Text="{Binding StatusConnectivity}"
+                    BackgroundColor="{Binding StatusConnectivity, Converter={StaticResource stringConverter }}"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+
+            <Label
+                FontSize="14" HorizontalTextAlignment="Start" VerticalOptions="Fill"
+                HorizontalOptions="FillAndExpand" Text="{Binding StatusMessage}"/>
+
+            <Label
+                FontSize="24" HorizontalTextAlignment="Center" VerticalOptions="Fill"
+                HorizontalOptions="FillAndExpand" Text="Highscore List"/>
+
+            <ListView
+                x:Name="HighScoresListView" ItemsSource="{Binding HighScorers}"
+                VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Grid.Row = "0" Grid.Column = "0" Text="{Binding Position}"
+                                    FontSize="20" VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center" />
+                                <Label
+                                    Grid.Row = "0" Grid.Column = "1" Text="{Binding Name}"    
+                                    FontSize="20" VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Start" />
+                                <Label
+                                    Grid.Row = "0" Grid.Column = "2" Text="{Binding Score}"   
+                                    FontSize="20" VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Start" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>     
+            </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
